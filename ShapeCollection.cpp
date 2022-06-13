@@ -74,9 +74,9 @@ void ShapeCollection::translateShapes(size_t addY, size_t addX, size_t index = 0
 	
 }
 
-void ShapeCollection::addCircle(size_t newX, size_t newY, size_t newWidth, size_t newHeight, const MyString& newColor) {
+void ShapeCollection::addCircle(size_t newX, size_t newY, size_t newRadius, const MyString& newColor) {
 	if (size == capacity) resize();
-	Circle* newCircle = new Circle(newX, newY, newWidth, newHeight, newColor);
+	Circle* newCircle = new Circle(newX, newY, newRadius, newColor);
 	addShape(newCircle);
 }
 void ShapeCollection::addRectangle(size_t newX, size_t newY, size_t newWidth, size_t newHeight, const MyString& newColor) {
@@ -84,9 +84,9 @@ void ShapeCollection::addRectangle(size_t newX, size_t newY, size_t newWidth, si
 	Rectangle* newRectangle = new Rectangle(newX, newY, newWidth, newHeight, newColor);
 	addShape(newRectangle);
 }
-void ShapeCollection::addLine(size_t newX, size_t newY, size_t newWidth, size_t newHeight, const MyString& newColor) {
+void ShapeCollection::addLine(size_t newX, size_t newY, size_t newEndAxisX, size_t newEndAxisY, size_t newStrokeWidth, const MyString& newColor) {
 	if (size == capacity) resize();
-	Line* newLine = new Line(newX, newY, newWidth, newHeight, newColor);
+	Line* newLine = new Line(newX, newY, newEndAxisX, newEndAxisY, newStrokeWidth, newColor);
 	addShape(newLine);
 }
 

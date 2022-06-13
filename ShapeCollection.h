@@ -18,9 +18,9 @@ public:
 	~ShapeCollection();
 	void printShapes();
 	void translateShapes(size_t, size_t, size_t);
-	void addCircle(size_t, size_t, size_t, size_t, const MyString&);
+	void addCircle(size_t, size_t, size_t,const MyString&);
 	void addRectangle(size_t, size_t, size_t, size_t,const MyString&);
-	void addLine(size_t, size_t, size_t, size_t, const MyString&);
+	void addLine(size_t, size_t, size_t, size_t, size_t,  const MyString&);
 	void removeShape(size_t);
 };
 
