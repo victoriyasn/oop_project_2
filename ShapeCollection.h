@@ -1,6 +1,8 @@
 #ifndef __SHAPECOLLECTION_H
 #define __SHAPECOLLECTION_H
 #include "ShapeBase.h"
+#include<fstream>
+using namespace std;
 
 class ShapeCollection {
 private:
@@ -22,6 +24,10 @@ public:
 	void addRectangle(size_t, size_t, size_t, size_t,const MyString&);
 	void addLine(size_t, size_t, size_t, size_t, size_t,  const MyString&);
 	void removeShape(size_t);
+	void shapesWithinRectangle(size_t, size_t, size_t, size_t);
+	void shapesWithinCircle(size_t, size_t, size_t);
+	void readFromFileCollection(ifstream&);
+	void putInFileCollection(ofstream&);
 };
 
 #endif 

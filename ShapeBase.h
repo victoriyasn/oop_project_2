@@ -17,7 +17,11 @@ public:
 	virtual Shape* clone() const = 0;
 	virtual void print() = 0;
 	virtual void translate(size_t, size_t) = 0;
-	virtual bool isWithinRect(size_t, size_t, size_t, size_t) = 0;
+	virtual bool isWithinRect(size_t, size_t, size_t, size_t) const = 0;
+	virtual bool pointInCircle(size_t, size_t, size_t, size_t, size_t) const;
+	virtual bool isWithinCircle(size_t, size_t, size_t) const = 0;
+	virtual void putInFile(ofstream&) = 0;
+
 	size_t getAxisX() const;
 	size_t getAxisY() const;
 

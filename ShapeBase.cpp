@@ -29,5 +29,11 @@ void Shape::setAxisY(size_t newY)  {
 }
 
 void Shape::setColor(const MyString& newColor)  {
-	color = newColor;
+	color.setString(newColor.getString());
+}
+
+bool Shape::pointInCircle(size_t checkAxisX, size_t checkAxisY, size_t checkRadius, size_t givenPointX, size_t givenPointY) const {
+	double distanceCheck;
+	distanceCheck = sqrt((givenPointX - checkAxisX) * (givenPointX - checkAxisX) + (givenPointY - checkAxisY) * (givenPointY - checkAxisY));
+	return distanceCheck < checkRadius;
 }
