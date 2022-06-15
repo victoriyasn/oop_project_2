@@ -153,35 +153,40 @@ int validateBegText(ifstream& in) {
 	return in.tellg();
 }
 
-//gotta fix that it reads one digit nums
+
 Rectangle readRect(ifstream& in) {
 	char buff[1028];
 	Rectangle r;
 	char ch;
 	in.getline(buff, 1028, '\"');
 	if (strcmp(buff, "x=") == 0) {
-		in.get(ch);
-		r.setAxisX(ch - '0');
+		in.getline(buff, 1028, '\"');
+		r.setAxisX(atoi(buff));
 		in.ignore();
 		in.getline(buff, 1028, '\"');
-		if (strcmp(buff, " y=") == 0) {
-			in.get(ch);
-			r.setAxisY(ch - '0');
+
+		if (strcmp(buff, "y=") == 0) {
+			in.getline(buff, 1028, '\"');
+			r.setAxisY(atoi(buff));
 			in.ignore();
 			in.getline(buff, 1028, '\"');
-			if (strcmp(buff, " width=") == 0) {
-				in.get(ch);
-				r.setWidth(ch - '0');
+
+			if (strcmp(buff, "width=") == 0) {
+				in.getline(buff, 1028, '\"');
+				r.setWidth(atoi(buff));
 				in.ignore();
 				in.getline(buff, 1028, '\"');
-				if (strcmp(buff, " height=") == 0) {
-					in.get(ch);
-					r.setHeight(ch - '0');
+
+				if (strcmp(buff, "height=") == 0) {
+					in.getline(buff, 1028, '\"');
+					r.setHeight(atoi(buff));
 					in.ignore();
 					in.getline(buff, 1028, '\"');
-					if (strcmp(buff, " fill=") == 0) {
+
+					if (strcmp(buff, "fill=") == 0) {
 						in.getline(buff, 1028, '\"');
 						r.setColor(buff);
+						
 						
 					}
 				}
@@ -198,27 +203,26 @@ Circle readCircle(ifstream& in) {
 	Circle c;
 	in.getline(buff, 1028, '\"');
 		if (strcmp(buff, "cx=") == 0) {
-			in.get(ch);
-			c.setAxisX(ch - '0');
+			in.getline(buff, 1028, '\"');
+			c.setAxisX(atoi(buff));
 			in.ignore();
 			in.getline(buff, 1028, '\"');
 	
-			if (strcmp(buff, " cy=") == 0) {
-				in.get(ch);
-				c.setAxisY(ch - '0');
+			if (strcmp(buff, "cy=") == 0) {
+				in.getline(buff, 1028, '\"');
+				c.setAxisY(atoi(buff));
 				in.ignore();
 				in.getline(buff, 1028, '\"');
 
-				if (strcmp(buff, " r=") == 0) {
-					in.get(ch);
-					c.setRadius(ch - '0');
+				if (strcmp(buff, "r=") == 0) {
+					in.getline(buff, 1028, '\"');
+					c.setRadius(atoi(buff));
 					in.ignore();
 					in.getline(buff, 1028, '\"');
 					
-					if (strcmp(buff, " fill=") == 0) {
+					if (strcmp(buff, "fill=") == 0) {
 						in.getline(buff, 1028, '\"');
 						c.setColor(buff);
-						
 						
 					}
 				}
@@ -233,28 +237,32 @@ Line readLine(ifstream& in) {
 	Line l;
 		in.getline(buff, 1028, '\"');
 		if (strcmp(buff, "x1=") == 0) {
-			in.get(ch);
-			l.setAxisX(ch - '0');
+			in.getline(buff, 1028, '\"');
+			l.setAxisX(atoi(buff));
 			in.ignore();
 			in.getline(buff, 1028, '\"');
-			if (strcmp(buff, " y1=") == 0) {
-				in.get(ch);
-				l.setAxisY(ch - '0');
+
+			if (strcmp(buff, "y1=") == 0) {
+				in.getline(buff, 1028, '\"');
+				l.setAxisY(atoi(buff));
 				in.ignore();
 				in.getline(buff, 1028, '\"');
-				if (strcmp(buff, " x2=") == 0) {
-					in.get(ch);
-					l.setEndAxisX(ch - '0');
+
+				if (strcmp(buff, "x2=") == 0) {
+					in.getline(buff, 1028, '\"');
+					l.setEndAxisX(atoi(buff));
 					in.ignore();
 					in.getline(buff, 1028, '\"');
-					if (strcmp(buff, " y2=") == 0) {
-						in.get(ch);
-						l.setEndAxisY(ch - '0');
+
+					if (strcmp(buff, "y2=") == 0) {
+						in.getline(buff, 1028, '\"');
+						l.setEndAxisY(atoi(buff));
 						in.ignore();
 						in.getline(buff, 1028, '\"');
-						if (strcmp(buff, " stroke-width = ") == 0) {
-							in.get(ch);
-							l.setStrokeWidth(ch - '0');
+
+						if (strcmp(buff, "stroke-width = ") == 0) {
+							in.getline(buff, 1028, '\"');
+							l.setStrokeWidth(atoi(buff));
 							
 						}
 					}
@@ -271,33 +279,36 @@ void ShapeCollection::readFromFileCollection(ifstream& in) {
 	bool timeToExit = false;
 	int curr = validateBegText(in);
 	if (curr != -1) {
-		//gotta fix writing a few figures
+		do {
 			in.get(ch);
 			if (ch == '<') {
-				do {
-					in.getline(buff, 1028, ' ');
-					if (strcmp(buff, "rect") == 0) {
-						Rectangle newRect = readRect(in);
-						addRectangle(newRect.getAxisX(), newRect.getAxisY(), newRect.getWidth(), newRect.getHeight(), newRect.getColor());
-
-					}
-					else if (strcmp(buff, "circle") == 0) {
-						Circle newCircle = readCircle(in);
-						addCircle(newCircle.getAxisX(), newCircle.getAxisY(), newCircle.getRadius(), newCircle.getColor());
-
-					}
-					else if (strcmp(buff, "line") == 0) {
-						Line newLine = readLine(in);
-						addLine(newLine.getAxisX(), newLine.getAxisY(), newLine.getEndAxisX(), newLine.getEndAxisY(), newLine.getStrokeWidth(), "Unknown");
-
-					}
-				} while (timeToExit == false);
 				
+				in.getline(buff, 1028, ' ');
+				if (strcmp(buff, "rect") == 0) {
+					Rectangle newRect = readRect(in);
+					addRectangle(newRect.getAxisX(), newRect.getAxisY(), newRect.getWidth(), newRect.getHeight(), newRect.getColor());
+					in.ignore();
+					in.ignore();
+				}
+				else if (strcmp(buff, "circle") == 0) {
+					Circle newCircle = readCircle(in);
+					addCircle(newCircle.getAxisX(), newCircle.getAxisY(), newCircle.getRadius(), newCircle.getColor());
+					in.ignore();
+					in.ignore();
+				}
+				else if (strcmp(buff, "line") == 0) {
+					Line newLine = readLine(in);
+					addLine(newLine.getAxisX(), newLine.getAxisY(), newLine.getEndAxisX(), newLine.getEndAxisY(), newLine.getStrokeWidth(), "Unknown");
+					in.ignore();
+					in.ignore();
+				}
+				else timeToExit = true;
+
 			}
 
+		} while (timeToExit == false);
 	}
 	else cout << "There's a problem with the file" << endl;
-	
 }
 void ShapeCollection::putInFileCollection(ofstream& out) {
 	out<<"<?xml version=\"1.0\" standalone=\"no\"?> \n <!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \n \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\" > \n";

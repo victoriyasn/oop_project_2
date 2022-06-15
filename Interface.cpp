@@ -1,5 +1,6 @@
 #include"Interface.h"
 #include <fstream>
+#include<iostream>
 using namespace std;
 void Interface::printHelp() {
 
@@ -23,15 +24,23 @@ void Interface::start() {
 	strcpy_s(fileName, 9, "Unknown");
 	bool closeTime = false;
 	bool closedFile = true;
+	bool thereIsChange = false;
+
 	do {
 		cin.getline(command, 128);
 		if (strcmp(command, "Help") == 0) printHelp();
-		if (strcmp(command, "Exit") == 0) closeTime = true;
+		if (strcmp(command, "Exit") == 0) {
+			closeTime = true;
+			if (thereIsChange) {
+				cout << "Don't forget to save the changes you made with commands Save and SaveAs" << endl;
+			}
+		} 
 		if (strcmp(command, "Open") == 0) {
 		cin.getline(fileName, 128);
 		ifstream inFile(fileName);
 		closedFile = false;
 		iCollection.readFromFileCollection(inFile);
+		cout << "Successfully read info from file: " << fileName << endl;
 		inFile.close();
 		}
 		//clean the information?
@@ -39,6 +48,7 @@ void Interface::start() {
 			closedFile = true;
 		}
 		if (strcmp(command, "Save") == 0) {
+			thereIsChange = false;
 			if (closedFile == false) {
 				if (strcmp(fileName, "Unknown") != 0) {
 					ofstream outFile(fileName);
@@ -52,6 +62,7 @@ void Interface::start() {
 			
 		}
 		if (strcmp(command, "SaveAs") == 0) {
+			thereIsChange = false;
 			if (closedFile == false) {
 				char newFileName[128];
 				cin.getline(newFileName, 128);
@@ -63,6 +74,7 @@ void Interface::start() {
 		}
 		if (strcmp(command, "Print") == 0) iCollection.printShapes();
 		if (strcmp(command, "Create") == 0) {
+			thereIsChange = true;
 			cin.getline(command, 128);
 			if (strcmp(command, "Circle") == 0) {
 				cin.getline(command, 128);
@@ -112,11 +124,13 @@ void Interface::start() {
 			else cout << "Invalid Input" << endl;
 		}
 		if (strcmp(command, "Erase") == 0) {
+			thereIsChange = true;
 			cin.getline(command, 128);
 			size_t index = atoi(command);
 			iCollection.removeShape(index);
 		}
 		if (strcmp(command, "Translate") == 0) {
+			thereIsChange = true;
 			cin.getline(command, 128);
 			size_t vertical = atoi(command);
 			cin.getline(command, 128);
