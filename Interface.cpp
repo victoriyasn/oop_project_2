@@ -19,6 +19,7 @@ void Interface::printHelp() {
 }
 
 void Interface::start() {
+	cout << "Please hit space and enter after every command that takes no parameter"<<endl;
 	char command[128];
 	char fileName[128];
 	strcpy_s(fileName, 9, "Unknown");
@@ -27,25 +28,24 @@ void Interface::start() {
 	bool thereIsChange = false;
 
 	do {
-		cin.getline(command, 128);
-		if (strcmp(command, "Help") == 0) printHelp();
-		if (strcmp(command, "Exit") == 0) {
-			closeTime = true;
-			if (thereIsChange) {
-				cout << "Don't forget to save the changes you made with commands Save and SaveAs" << endl;
-			}
-		} 
+		cin.getline(command, 128, ' ');
+		if (strcmp(command, "Help") == 0) {
+			printHelp();
+			cin.getline(command, 128);
+		}
 		if (strcmp(command, "Open") == 0) {
 		cin.getline(fileName, 128);
 		ifstream inFile(fileName);
 		closedFile = false;
 		iCollection.readFromFileCollection(inFile);
-		cout << "Successfully read info from file: " << fileName << endl;
+		cout << fileName << endl;
 		inFile.close();
 		}
-		//clean the information?
 		if (strcmp(command, "Close") == 0) {
 			closedFile = true;
+			iCollection.removeEverything();
+			cout << "Succesfully closed : " << fileName << endl;
+			cin.getline(command, 128);
 		}
 		if (strcmp(command, "Save") == 0) {
 			thereIsChange = false;
@@ -59,7 +59,7 @@ void Interface::start() {
 				else cout << "There isn't an open file" << endl;
 			}
 			else cout << "File is currently closed you can only open files rn"<<endl;
-			
+			cin.getline(command, 128);
 		}
 		if (strcmp(command, "SaveAs") == 0) {
 			thereIsChange = false;
@@ -72,95 +72,159 @@ void Interface::start() {
 				cout << "Succesfully put in file with the name:" << newFileName << endl;
 			} else cout << "File is currently closed you can only open files rn" << endl;
 		}
-		if (strcmp(command, "Print") == 0) iCollection.printShapes();
+		if (strcmp(command, "Print") == 0) {
+			if (closedFile == false) {
+				iCollection.printShapes();
+				cin.getline(command, 128);
+			}
+			else {
+				cin.getline(command, 128);
+				cout << "File is closed, please open a new one" << endl;
+			}
+		}
 		if (strcmp(command, "Create") == 0) {
 			thereIsChange = true;
-			cin.getline(command, 128);
-			if (strcmp(command, "Circle") == 0) {
-				cin.getline(command, 128);
-				size_t axisX = atoi(command);
-				cin.getline(command, 128);
-				size_t axisY = atoi(command);
-				cin.getline(command, 128);
-				size_t radius = atoi(command);
-				cin.getline(command, 128);
-				MyString color;
-				color.setString(command);
-				iCollection.addCircle(axisX, axisY, radius, color);
-				cout << "Succesfully created a circle!" << endl;
+			if (closedFile == false) {
+				cin.getline(command, 128, ' ');
+				if (strcmp(command, "Circle") == 0) {
+					cin.getline(command, 128, ' ');
+					size_t axisX = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t axisY = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t radius = atoi(command);
+					cin.getline(command, 128);
+					MyString color;
+					color.setString(command);
+					iCollection.addCircle(axisX, axisY, radius, color);
+					cout << "Succesfully created a circle!" << endl;
+				}
+				else if (strcmp(command, "Rectangle") == 0) {
+					cin.getline(command, 128, ' ');
+					size_t axisX = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t axisY = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t height = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t width = atoi(command);
+					cin.getline(command, 128);
+					MyString color;
+					color.setString(command);
+					iCollection.addRectangle(axisX, axisY, height, width, color);
+					cout << "Succesfully created a rectangle!" << endl;
+				}
+				else if (strcmp(command, "Line") == 0) {
+					cin.getline(command, 128, ' ');
+					size_t axisX = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t axisY = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t endAxisX = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t endAxisY = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t stroke = atoi(command);
+					cin.getline(command, 128);
+					MyString color;
+					color.setString(command);
+					iCollection.addLine(axisX, axisY, endAxisX, endAxisY, stroke, color);
+					cout << "Succesfully created a line!" << endl;
+				}
+				else cout << "Invalid Input" << endl;
 			}
-			else if (strcmp(command, "Rectangle") == 0) {
+			else {
 				cin.getline(command, 128);
-				size_t axisX = atoi(command);
-				cin.getline(command, 128);
-				size_t axisY = atoi(command);
-				cin.getline(command, 128);
-				size_t height = atoi(command);
-				cin.getline(command, 128);
-				size_t width = atoi(command);
-				cin.getline(command, 128);
-				MyString color;
-				color.setString(command);
-				iCollection.addRectangle(axisX, axisY, height, width, color);
-				cout << "Succesfully created a rectangle!" << endl;
+				cout << "File is closed, please open a new one" << endl;
 			}
-			else if (strcmp(command, "Line") == 0) {
-				cin.getline(command, 128);
-				size_t axisX = atoi(command);
-				cin.getline(command, 128);
-				size_t axisY = atoi(command);
-				cin.getline(command, 128);
-				size_t endAxisX = atoi(command);
-				cin.getline(command, 128);
-				size_t endAxisY = atoi(command);
-				cin.getline(command, 128);
-				size_t stroke = atoi(command);
-				cin.getline(command, 128);
-				MyString color;
-				color.setString(command);
-				iCollection.addLine(axisX, axisY, endAxisX, endAxisY, stroke, color);
-				cout << "Succesfully created a line!" << endl;
-			}
-			else cout << "Invalid Input" << endl;
-		}
+		}	
 		if (strcmp(command, "Erase") == 0) {
 			thereIsChange = true;
-			cin.getline(command, 128);
-			size_t index = atoi(command);
-			iCollection.removeShape(index);
+			if (closedFile == false) {
+				cin.getline(command, 128);
+				size_t index = atoi(command);
+				iCollection.removeShape(index);
+			}
+			else {
+				cin.getline(command, 128);
+				cout << "File is closed, please open a new one" << endl;
+			}
 		}
 		if (strcmp(command, "Translate") == 0) {
 			thereIsChange = true;
-			cin.getline(command, 128);
-			size_t vertical = atoi(command);
-			cin.getline(command, 128);
-			size_t horizontal = atoi(command);
-			iCollection.translateShapes(vertical, horizontal, 0);
-			cout << "Translated!" << endl;
+			if (closedFile == false) {
+				cout << "Please enter vertical and horizontal: ";
+				cin.getline(command, 128, ' ');
+				size_t vertical = atoi(command);
+				cin.getline(command, 128);
+				size_t horizontal = atoi(command);
+				iCollection.translateShapes(vertical, horizontal, 0);
+				cout << "Translated!" << endl;
+			}
+			else {
+				cin.getline(command, 128);
+				cout << "File is closed, please open a new one" << endl;
+			}
 		}
 		if (strcmp(command, "Within") == 0) {
-			cin.getline(command, 128);
-			if (strcmp(command, "Rectangle") == 0) {
-				cin.getline(command, 128);
-				size_t axisX = atoi(command);
-				cin.getline(command, 128);
-				size_t axisY = atoi(command);
-				cin.getline(command, 128);
-				size_t width = atoi(command);
-				cin.getline(command, 128);
-				size_t height = atoi(command);
-				iCollection.shapesWithinRectangle(axisX, axisY, width, height);
+			if (closedFile == false) {
+				cin.getline(command, 128, ' ');
+				if (strcmp(command, "Rectangle") == 0) {
+					cin.getline(command, 128, ' ');
+					size_t axisX = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t axisY = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t width = atoi(command);
+					cin.getline(command, 128);
+					size_t height = atoi(command);
+					iCollection.shapesWithinRectangle(axisX, axisY, width, height);
+				}
+				else if (strcmp(command, "Circle") == 0) {
+					cin.getline(command, 128, ' ');
+					size_t axisX = atoi(command);
+					cin.getline(command, 128, ' ');
+					size_t axisY = atoi(command);
+					cin.getline(command, 128);
+					size_t radius = atoi(command);
+					iCollection.shapesWithinCircle(axisX, axisY, radius);
+				}
+				else cout << "Invalid input!" << endl;
 			}
-			else if (strcmp(command, "Circle") == 0) {
+			else {
 				cin.getline(command, 128);
-				size_t axisX = atoi(command);
-				cin.getline(command, 128);
-				size_t axisY = atoi(command);
-				cin.getline(command, 128);
-				size_t radius = atoi(command);
-				iCollection.shapesWithinCircle(axisX, axisY, radius);
+				cout << "File is closed, please open a new one" << endl;
 			}
-			else cout << "Invalid input!" << endl;
+		}
+		if (strcmp(command, "Exit") == 0) {
+			if (thereIsChange) {
+				cout << "Don't forget to save the changes you made with commands Save and SaveAs or if you don't want to write Close" << endl;
+				cin.getline(command, 128);
+				cin.getline(command, 128, ' ');
+				if (strcmp(command, "Close") == 0) {
+					cout << "Succesfully closed: " << fileName << endl;
+					closeTime = true;
+				}
+				else if (strcmp(command, "Save") == 0) {
+					cout << "In";
+					ofstream outFile(fileName);
+					iCollection.putInFileCollection(outFile);
+					outFile.close();
+					cout << "Succesfully put in file with the name:" << fileName << endl;
+					closeTime = true;
+				}
+				else if (strcmp(command, "SaveAs") == 0) {
+					char newFileName[128];
+					cin.getline(newFileName, 128);
+					ofstream outFile(newFileName);
+					iCollection.putInFileCollection(outFile);
+					outFile.close();
+					cout << "Succesfully put in file with the name:" << newFileName << endl;
+					closeTime = true;
+				}
+			}
+			else closeTime = true;
+			cout << "Exiting..." << endl;
 		}
 	} while (closeTime != true);
 

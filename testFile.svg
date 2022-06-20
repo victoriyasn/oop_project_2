@@ -1,0 +1,8 @@
+<?xml version="1.0" standalone="no"?> 
+ <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+ "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" > 
+<svg> 
+<rect x="42" y="22" width="4" height="5" fill="Pink" />
+<rect x="50" y="40" width="30" height="10" fill="blue" />
+<circle cx="30" cy="30" r="7" fill="pink" />
+</svg> 

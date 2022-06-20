@@ -28,6 +28,7 @@ public:
 	void shapesWithinCircle(size_t, size_t, size_t);
 	void readFromFileCollection(ifstream&);
 	void putInFileCollection(ofstream&);
+	void removeEverything();
 };
 
 #endif 

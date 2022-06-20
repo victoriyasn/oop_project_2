@@ -97,7 +97,7 @@ void ShapeCollection::removeShape(size_t index) {
 	if (index > size) cout << "Invalid input!";
 	else {
 		delete collection[index-1];
-		for (size_t i = index; i < size-1; i++) {
+		for (size_t i = index-1; i < size-1; i++) {
 			collection[i] = collection[i + 1];
 		}
 		size--;
@@ -152,7 +152,6 @@ int validateBegText(ifstream& in) {
 
 	return in.tellg();
 }
-
 
 Rectangle readRect(ifstream& in) {
 	char buff[1028];
@@ -307,6 +306,7 @@ void ShapeCollection::readFromFileCollection(ifstream& in) {
 			}
 
 		} while (timeToExit == false);
+		cout << "Successfully read info from file: ";
 	}
 	else cout << "There's a problem with the file" << endl;
 }
@@ -320,4 +320,9 @@ void ShapeCollection::putInFileCollection(ofstream& out) {
 	out << "</svg> \n";
 
 	
+}
+
+void ShapeCollection::removeEverything(){
+	size = 0;
+	freeMemory();
 }
